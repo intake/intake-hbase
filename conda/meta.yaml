@@ -1,0 +1,37 @@
+package:
+   name: intake-hbase
+   version: 0.0.2
+
+source:
+   path: ..
+
+build:
+  number: 0
+  script: python setup.py install --single-version-externally-managed --record=record.txt
+  noarch: python
+
+requirements:
+  build:
+    - python
+    - jinja2
+  run:
+    - intake
+    - python
+    - happybase
+
+test:
+  source_files:
+    - tests
+  requires:
+    - pytest
+    - pytest-cov
+    - coverage
+  commands:
+    - py.test --verbose --cov=intake_hbase tests
+
+about:
+  home: https://github.com/ContinuumIO/intake-hbase
+  license: BSD
+  license_file: LICENSE
+  summary: |
+    HBase plugin for Intake
