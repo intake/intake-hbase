@@ -1,9 +1,9 @@
 language: generic
 sudo: required
-os:
-  - linux
 services:
   - docker
+os:
+  - linux
 env:
   matrix:
   - CONDA_PY=35
