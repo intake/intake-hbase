@@ -3,7 +3,7 @@ sudo: required
 services:
   - docker
 os:
-- linux
+  - linux
 env:
   matrix:
   - CONDA_PY=35

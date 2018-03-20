@@ -1,4 +1,4 @@
-Welcome to intake_solr's documentation!
+Welcome to intake-hbase's documentation!
 ================================================
 
 .. toctree::
