@@ -1,6 +1,9 @@
 language: generic
+sudo: required
 os:
-- linux
+  - linux
+services:
+  - docker
 env:
   matrix:
   - CONDA_PY=35
