@@ -2,7 +2,6 @@
 import happybase
 import os
 
-import pysolr
 import pytest
 import pandas as pd
 import time
