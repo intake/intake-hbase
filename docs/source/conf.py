@@ -168,6 +168,3 @@ texinfo_documents = [
      author, 'intake_hbase', 'One line description of project.',
      'Miscellaneous'),
 ]
-
-
-

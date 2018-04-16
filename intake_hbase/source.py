@@ -15,8 +15,8 @@ class HBaseSource(base.DataSource):
         See happybase connection arguments
         https://happybase.readthedocs.io/en/latest/api.html#happybase.Connection
     divisions: list or None
-        Partition key boundaries. If None, will have one partition for the whole
-        table. The number of partitions will be ``len(divisions) - 1``.
+        Partition key boundaries. If None, will have one partition for the
+        whole table. The number of partitions will be ``len(divisions) - 1``.
     qargs: dict or None
         Further arguments to ``table.scan``, see
         https://happybase.readthedocs.io/en/latest/api.html#happybase.Table.scan
