@@ -6,7 +6,7 @@ import pytest
 import pandas as pd
 import time
 
-from intake_hbase import HBaseSource, HBasePlugin
+from intake_hbase.source import HBaseSource
 from .util import start_hbase, stop_docker, TEST
 
 CONNECT = {'host': 'localhost', 'port': 9090}

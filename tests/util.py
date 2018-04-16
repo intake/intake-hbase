@@ -13,7 +13,7 @@ def start_hbase():
     """
     print('Starting HBASE server...')
 
-    cmd = shlex.split('docker run -d -p 9095:9095 -p 9090:9090 --name %s ' 
+    cmd = shlex.split('docker run -d -p 9095:9095 -p 9090:9090 --name %s '
                       ' dajobe/hbase' % container_name)
     cid = subprocess.check_output(cmd).decode()[:-1]
     timeout = 60
