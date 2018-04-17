@@ -3,11 +3,11 @@ API Reference
 
 .. currentmodule:: intake_hbase
 .. autosummary::
-   Plugin
-   HBaseRSource
+   intake_hbase.Plugin
+   intake_hbase.source.HBaseRSource
 
-.. autoclass:: Plugin
+.. autoclass:: intake_hbase.Plugin
    :members:
 
-.. autoclass:: HBaseSource
+.. autoclass:: intake_hbase.source.HBaseSource
    :members:
