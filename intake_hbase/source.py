@@ -1,5 +1,5 @@
 from intake.source import base
-import happybase
+from . import __version__
 
 
 class HBaseSource(base.DataSource):
@@ -22,6 +22,9 @@ class HBaseSource(base.DataSource):
         https://happybase.readthedocs.io/en/latest/api.html#happybase.Table.scan
     """
     container = 'python'
+    name = 'hbase'
+    version = __version__
+    partition_access = True
 
     def __init__(self, table, connection, divisions=None, qargs=None,
                  metadata=None):
@@ -34,21 +37,21 @@ class HBaseSource(base.DataSource):
         self.divisions = divisions
         self.qargs = qargs or {}
         self._schema = None
-        super(HBaseSource, self).__init__(container=self.container,
-                                          metadata=metadata)
+        super(HBaseSource, self).__init__(metadata=metadata)
+        if self.divisions is not None:
+            self.npartitions = len(self.divisions) - 1
+        else:
+            self.npartitions = 1
 
     def _get_schema(self):
-        if self.divisions is not None:
-            npartitions = len(self.divisions) - 1
-        else:
-            npartitions = 1
         return base.Schema(datashape=None,
                            dtype=None,
                            shape=None,
-                           npartitions=npartitions,
+                           npartitions=self.npartitions,
                            extra_metadata={})
 
     def _do_query(self, start, end):
+        import happybase
         conn = happybase.Connection(**self.conn)
         table = conn.table(self.table)
         return list(table.scan(row_start=start, row_stop=end, **self.qargs))
@@ -58,3 +61,7 @@ class HBaseSource(base.DataSource):
             return self._do_query(self.divisions[i], self.divisions[i+1])
         else:
             return self._do_query(None, None)
+
+    def read(self):
+        return sum([self._get_partition(i)
+                    for i in range(self.npartitions)], [])
