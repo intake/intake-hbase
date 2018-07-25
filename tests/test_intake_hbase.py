@@ -58,3 +58,17 @@ def test_read_part(engine):
     assert out[0][1][b'field:name'] == b'Charlie'
     out = source.read()
     assert len(out) == 4
+
+
+def test_read_dask(engine):
+    source = HBaseSource(TEST, CONNECT, divisions=list('01234'))
+    source.discover()
+    assert source.npartitions == 4
+    b = source.to_dask()
+    out, = b.take(1)
+    assert out[1][b'field:name'] == b'Alice'
+    out2 = b.compute()
+    assert out2[0] == out
+    assert len(out2) == 4
+    assert b.pluck(1).pluck(b'field:name').map(bytes.decode).compute() == [
+        'Alice', 'Bob', 'Charlie', 'Eve']
