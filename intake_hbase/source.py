@@ -5,6 +5,9 @@ from . import __version__
 class HBaseSource(base.DataSource):
     """Execute a query on HBASE
 
+    The data are returned as tuples of (ID, data) where the data is a dict
+    of field-value pairs.
+
     Parameters
     ----------
     table: str
@@ -62,6 +65,16 @@ class HBaseSource(base.DataSource):
         else:
             return self._do_query(None, None)
 
+    def to_dask(self):
+        """Return a dask-bag of results"""
+        import dask.bag as db
+        import dask.delayed
+        dpart = dask.delayed(self._get_partition)
+        return db.from_delayed([dpart(i) for i in range(self.npartitions)])
+
     def read(self):
-        return sum([self._get_partition(i)
-                    for i in range(self.npartitions)], [])
+        """Return all results"""
+        if self.divisions:
+            return self.to_dask().compute()
+        else:
+            return self._get_partition(None)
