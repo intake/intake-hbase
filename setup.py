@@ -17,6 +17,10 @@ setup(
     license='BSD',
     py_modules=['intake_hbase'],
     packages=find_packages(),
+    entry_points={
+        'intake.drivers': [
+            'hbase = intake_hbase.source:HBaseSource',
+        ]},
     package_data={'': ['*.csv', '*.yml', '*.html']},
     include_package_data=True,
     install_requires=requires,
